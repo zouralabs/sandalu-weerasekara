@@ -1,4 +1,4 @@
-export type Level = "Primary" | "Grade 6–9" | "O/L" | "A/L";
+export type Level = "Primary" | "Grade 6–9" | "O/L" | "A/L" | "All";
 export type Medium = "Sinhala" | "English" | "Tamil";
 export interface Book {
   id: string;

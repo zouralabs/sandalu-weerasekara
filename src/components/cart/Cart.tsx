@@ -84,7 +84,7 @@ export function Cart() {
           <dl>
             <div>
               <dt>
-                Books ({lines.reduce((sum, line) => sum + line.quantity, 0)})
+                Items ({lines.reduce((sum, line) => sum + line.quantity, 0)})
               </dt>
               <dd>{formatCurrency(total)}</dd>
             </div>

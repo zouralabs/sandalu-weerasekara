@@ -73,7 +73,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((current) =>
       normalizeCart([...current, { bookId: id, quantity }]),
     );
-    setNotice("Book added to your cart. Maximum 99 per title.");
+    setNotice("Item added to your cart. Maximum 99 per item in one order.");
   }, []);
   const update = useCallback((id: string, quantity: number) => {
     if (!Number.isFinite(quantity)) return;
@@ -95,7 +95,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
   const remove = useCallback((id: string) => {
     setItems((current) => current.filter((item) => item.bookId !== id));
-    setNotice("Book removed from your cart.");
+    setNotice("Item removed from your cart.");
   }, []);
   return (
     <CartContext.Provider
