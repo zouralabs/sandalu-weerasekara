@@ -1,6 +1,7 @@
 import { products as books } from "@/data/products";
 import type { CartItem } from "@/types";
 export const MAX_QUANTITY = 99;
+export const COURIER_CHARGE_MINIMUM = 200;
 export function normalizeCart(value: unknown): CartItem[] {
   if (!Array.isArray(value)) return [];
   const quantities = new Map<string, number>();
@@ -23,6 +24,9 @@ export function normalizeCart(value: unknown): CartItem[] {
     );
   }
   return Array.from(quantities, ([bookId, quantity]) => ({ bookId, quantity }));
+}
+export function courierCharge(items: CartItem[]) {
+  return normalizeCart(items).length > 0 ? COURIER_CHARGE_MINIMUM : 0;
 }
 export function cartLines(items: CartItem[]) {
   return normalizeCart(items).flatMap((item) => {

@@ -28,9 +28,17 @@ export function BookCard({ book }: { book: Book }) {
         <h3>
           <Link href={`/shop/${book.slug}`}>{book.title}</Link>
         </h3>
-        <p className="small muted">{book.medium} medium</p>
+        {book.shortDescription && (
+          <p className="book-card-description">{book.shortDescription}</p>
+        )}
+        {book.medium && <p className="small muted">{book.medium} medium</p>}
         <div className="price-row">
-          <strong>{formatCurrency(book.price)}</strong>
+          <span className="book-price">
+            <strong>{formatCurrency(book.price)}</strong>
+            {book.compareAtPrice && (
+              <s>{formatCurrency(book.compareAtPrice)}</s>
+            )}
+          </span>
           <span className={`stock ${book.inStock ? "" : "unavailable"}`}>
             {book.inStock ? "In stock" : "Out of stock"}
           </span>

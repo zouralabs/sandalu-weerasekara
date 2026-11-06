@@ -1,19 +1,42 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { books } from "@/data/books";
-import { teachers } from "@/data/teachers";
+import { accessories } from "@/data/accessories";
 import { classes } from "@/data/classes";
+import { seminars } from "@/data/seminars";
 import { includesQuery } from "@/lib/filters";
 import { BookGrid } from "@/components/books/BookCard";
 import { ClassGrid } from "@/components/classes/ClassCard";
-import { TeacherGrid } from "@/components/teachers/TeacherCard";
+import { SeminarGrid } from "@/components/seminars/SeminarCard";
 import { EmptyState } from "./EmptyState";
 import { SectionHeader } from "./SectionHeader";
 export function SearchResults() {
   const query = (useSearchParams().get("q") ?? "").trim();
   const foundBooks = query
     ? books.filter((book) =>
-        includesQuery(query, book.title, book.subject, book.medium),
+        includesQuery(
+          query,
+          book.title,
+          book.subject,
+          book.level,
+          book.medium ?? "",
+          book.category,
+          book.author ?? "",
+          book.publisher ?? "",
+          book.description,
+        ),
+      )
+    : [];
+  const foundAccessories = query
+    ? accessories.filter((item) =>
+        includesQuery(
+          query,
+          item.title,
+          item.subject,
+          item.medium ?? "",
+          item.category,
+          item.description,
+        ),
       )
     : [];
   const foundClasses = query
@@ -22,22 +45,42 @@ export function SearchResults() {
           query,
           item.title,
           item.subject,
-          teachers.find((teacher) => teacher.id === item.teacherId)?.name ?? "",
+          item.level,
+          item.medium,
+          item.district,
+          item.type,
+          item.format,
+          item.schedule,
+          item.location,
+          item.description,
+          item.target ?? "",
         ),
       )
     : [];
-  const foundTeachers = query
-    ? teachers.filter((teacher) =>
-        includesQuery(query, teacher.name, teacher.subjects),
+  const foundSeminars = query
+    ? seminars.filter((item) =>
+        includesQuery(
+          query,
+          item.title,
+          item.subject,
+          item.venue,
+          item.type,
+          item.time,
+          item.description,
+        ),
       )
     : [];
-  const total = foundBooks.length + foundClasses.length + foundTeachers.length;
+  const total =
+    foundBooks.length +
+    foundAccessories.length +
+    foundClasses.length +
+    foundSeminars.length;
   return (
     <>
       <SectionHeader
         page
         title={query ? `Results for “${query}”` : "What are you looking for?"}
-        description="Search book titles, subjects, teachers and tuition classes."
+        description="Search book titles, subjects, authors, publishers, and accessories."
       />
       <form className="page-search" action="/search/" role="search">
         <label className="sr-only" htmlFor="results-query">
@@ -50,7 +93,7 @@ export function SearchResults() {
           name="q"
           required
           defaultValue={query}
-          placeholder="Try Physics, Mathematics or a teacher’s name"
+          placeholder="Try Accounting, Calculator or Sandalu"
         />
         <button className="button primary">Search</button>
       </form>
@@ -63,12 +106,12 @@ export function SearchResults() {
         <EmptyState
           title={
             query
-              ? "No matching books, teachers or classes"
+              ? "No matching results"
               : "Start with a subject or name"
           }
           description={
             query
-              ? "Check the spelling or try a broader subject, such as Physics or English."
+              ? "Check the spelling or try a broader term, such as Accounting, Books, or Accessories."
               : "Enter a search term above to explore the marketplace."
           }
         />
@@ -79,16 +122,22 @@ export function SearchResults() {
           <BookGrid items={foundBooks} />
         </section>
       )}
+      {foundAccessories.length > 0 && (
+        <section className="section">
+          <SectionHeader title={`Accessories (${foundAccessories.length})`} />
+          <BookGrid items={foundAccessories} />
+        </section>
+      )}
       {foundClasses.length > 0 && (
         <section className="section">
-          <SectionHeader title={`Tuition classes (${foundClasses.length})`} />
+          <SectionHeader title={`Classes (${foundClasses.length})`} />
           <ClassGrid items={foundClasses} />
         </section>
       )}
-      {foundTeachers.length > 0 && (
+      {foundSeminars.length > 0 && (
         <section className="section">
-          <SectionHeader title={`Teachers (${foundTeachers.length})`} />
-          <TeacherGrid items={foundTeachers} />
+          <SectionHeader title={`Seminars (${foundSeminars.length})`} />
+          <SeminarGrid items={foundSeminars} />
         </section>
       )}
     </>

@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { teachers } from "@/data/teachers";
 import type { Seminar } from "@/types";
 export function EventStatus({ endAt }: { endAt: string }) {
   const [past, setPast] = useState(false);
@@ -19,7 +18,7 @@ export function EventStatus({ endAt }: { endAt: string }) {
   );
 }
 export function SeminarCard({ item }: { item: Seminar }) {
-  const teacher = teachers.find((t) => t.id === item.teacherId)!;
+  const educator = "Sandalu Isiwara";
   const date = new Date(`${item.date}T12:00:00+05:30`);
   return (
     <article className="seminar-card">
@@ -53,7 +52,7 @@ export function SeminarCard({ item }: { item: Seminar }) {
             <Link href={`/seminars/${item.slug}`}>{item.title}</Link>
           </h3>
           <p>
-            {teacher.name} · {item.subject}
+            {educator} · {item.subject}
           </p>
           <p className="small muted">{item.time}</p>
           <p className="small muted">

@@ -1,55 +1,85 @@
 import { site } from "@/config/site";
+import { Mail, Phone } from "lucide-react";
+import { siWhatsapp } from "simple-icons";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { SectionHeader } from "@/components/common/SectionHeader";
-import { WhatsAppButton } from "@/components/common/WhatsAppButton";
 import { ContactForm } from "@/components/common/ContactForm";
+import { SocialLinks } from "@/components/common/SocialLinks";
 export const metadata = {
   title: "Contact Us",
   description:
-    "Contact the store about book orders, classes, seminars or advertising.",
+    "Contact the store about book orders and study accessories.",
 };
 export default function Page() {
   return (
-    <div className="container page">
-      <Breadcrumbs items={[{ label: "Contact Us" }]} />
-      <SectionHeader
-        page
-        title="Let’s help you take the next step."
-        eyebrow="CONTACT US"
-        description="A question about a book, a class or advertising? Start a conversation."
-      />
-      <div className="contact-layout">
-        <div className="contact-info">
-          <h2>Talk to {site.name}</h2>
-          <p>{site.description}</p>
-          <WhatsAppButton message="Hello, I would like some help with a book, tuition class or advertising inquiry.">
-            Contact via WhatsApp
-          </WhatsAppButton>
-          {site.telephone && (
+    <div className="commerce-contact-band contact-page-band">
+      <div className="container">
+        <Breadcrumbs items={[{ label: "Contact Us" }]} />
+      </div>
+      <div className="container commerce-contact">
+        <div className="commerce-contact-copy">
+          <header className="header">
+            <span className="eyebrow">CONTACT</span>
+            <h1 id="contact-title">Let’s talk about your next step.</h1>
             <p>
-              <a href={`tel:${site.telephone}`}>{site.telephone}</a>
+              Need help choosing a book, accessory, or class? Reach out directly.
             </p>
-          )}
-          {site.email && (
-            <p>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
-            </p>
-          )}
-          {site.address && <p>{site.address}</p>}
-          {!site.telephone && !site.email && (
-            <p className="info-note">
-              Business contact details have not yet been configured in this
-              demo. You can still prepare and copy your inquiry.
-            </p>
-          )}
-          <h3>Ordering books?</h3>
-          <p>
-            Use the cart to include book titles, quantities and totals in one
-            message. Delivery charges and payment arrangements are confirmed
-            directly by the store.
+          </header>
+          <div className="commerce-contact-points">
+            {site.email && (
+              <a href={`mailto:${site.email}`}>
+                <span className="commerce-contact-icon" aria-hidden="true">
+                  <Mail size={20} />
+                </span>
+                <span>
+                  <small>Email us</small>
+                  <strong>{site.email}</strong>
+                </span>
+              </a>
+            )}
+            {site.telephone && (
+              <a href={`tel:${site.telephone.replace(/\s+/g, "")}`}>
+                <span className="commerce-contact-icon" aria-hidden="true">
+                  <Phone size={20} />
+                </span>
+                <span>
+                  <small>Call us</small>
+                  <strong>{site.telephone}</strong>
+                </span>
+              </a>
+            )}
+            {site.whatsappNumber && (
+              <a
+                href={`https://wa.me/${site.whatsappNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span
+                  className="commerce-contact-icon whatsapp"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d={siWhatsapp.path} />
+                  </svg>
+                </span>
+                <span>
+                  <small>WhatsApp</small>
+                  <strong>{site.telephone}</strong>
+                </span>
+              </a>
+            )}
+          </div>
+          <div className="commerce-contact-social">
+            <span className="eyebrow">FOLLOW ALONG</span>
+            <SocialLinks includeWhatsApp={false} />
+          </div>
+          <p className="commerce-contact-ordering">
+            Orders are confirmed personally. Add books to your cart to include
+            titles and quantities in your inquiry.
           </p>
         </div>
-        <ContactForm />
+        <div className="commerce-contact-form">
+          <ContactForm />
+        </div>
       </div>
     </div>
   );

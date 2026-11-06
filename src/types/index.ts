@@ -1,22 +1,26 @@
 export type Level = "Primary" | "Grade 6–9" | "O/L" | "A/L" | "All";
-export type Medium = "Sinhala" | "English" | "Tamil";
+export type Medium = "Sinhala" | "English";
 export interface Book {
   id: string;
   slug: string;
   title: string;
   price: number;
+  compareAtPrice?: number;
   subject: string;
   level: Level;
-  medium: Medium;
+  medium?: Medium;
   category: string;
   image: string;
   inStock: boolean;
   featured: boolean;
   addedAt: string;
   description: string;
+  shortDescription?: string;
+  descriptionHighlights?: string[];
   publisher?: string;
   author?: string;
   isbn?: string;
+  videoLessons?: { title: string; url: string }[];
   sample: boolean;
 }
 export interface Teacher {
@@ -37,7 +41,6 @@ export interface TuitionClass {
   id: string;
   slug: string;
   title: string;
-  teacherId: string;
   subject: string;
   level: Level;
   medium: Medium;
@@ -50,6 +53,10 @@ export interface TuitionClass {
   poster: string;
   featured: boolean;
   sample: boolean;
+  fee: number;
+  features: string[];
+  commencement?: string;
+  target?: string;
 }
 export interface Seminar {
   id: string;

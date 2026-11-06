@@ -18,6 +18,7 @@ interface CartValue {
   add: (id: string, quantity?: number) => void;
   update: (id: string, quantity: number) => void;
   remove: (id: string) => void;
+  clear: () => void;
 }
 const CartContext = createContext<CartValue | null>(null);
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -97,9 +98,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((current) => current.filter((item) => item.bookId !== id));
     setNotice("Item removed from your cart.");
   }, []);
+  const clear = useCallback(() => {
+    setItems([]);
+    setNotice("Your cart has been cleared.");
+    try {
+      localStorage.setItem(KEY, "[]");
+    } catch {
+      setStorageError(
+        "The cart was cleared, but the saved cart could not be updated.",
+      );
+    }
+  }, []);
   return (
     <CartContext.Provider
-      value={{ items, ready, notice, storageError, add, update, remove }}
+      value={{ items, ready, notice, storageError, add, update, remove, clear }}
     >
       {children}
       <div

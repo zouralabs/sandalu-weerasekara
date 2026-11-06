@@ -1,110 +1,94 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { classes } from "@/data/classes";
-import { teachers } from "@/data/teachers";
-import { ClassGrid } from "@/components/classes/ClassCard";
-import { TeacherCard } from "@/components/teachers/TeacherCard";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { SectionHeader } from "@/components/common/SectionHeader";
-import { WhatsAppButton } from "@/components/common/WhatsAppButton";
-import { classMessage } from "@/lib/whatsapp";
+import { EnrollmentDialog } from "@/components/classes/EnrollmentDialog";
+import { getLocalizedClassDescription, getLocalizedClassLocation, getLocalizedClassSchedule, getLocalizedClassTitle, getLocalizedMedium } from "@/lib/classes-language";
+
 export function generateStaticParams() {
   return classes.map((item) => ({ slug: item.slug }));
 }
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const item = classes.find((item) => item.slug === slug);
-  return {
-    title: item?.title ?? "Class not found",
-    description: item?.description,
-  };
+  return item
+    ? { title: getLocalizedClassTitle(item), description: getLocalizedClassDescription(item) }
+    : { title: "Class not found", description: "The requested class could not be found." };
 }
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+
+export default async function ClassDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const item = classes.find((item) => item.slug === slug);
   if (!item) notFound();
-  const teacher = teachers.find((teacher) => teacher.id === item.teacherId)!;
-  const related = classes
-    .filter(
-      (other) =>
-        other.id !== item.id &&
-        (other.subject === item.subject || other.level === item.level),
-    )
-    .slice(0, 3);
+
+  const title = getLocalizedClassTitle(item);
+  const description = getLocalizedClassDescription(item);
+  const features = item.features.map((feature) => {
+    const separator = feature.indexOf(":");
+    return separator > 0
+      ? {
+          title: feature.slice(0, separator),
+          description: feature.slice(separator + 1).trim(),
+        }
+      : { title: feature, description: "" };
+  });
+  const feeLabel = item.medium === "Sinhala" ? "මාසික ගාස්තුව" : "Monthly fee";
+  const feeAmount = item.medium === "Sinhala"
+    ? `රු. ${item.fee.toLocaleString("si-LK")}`
+    : `Rs. ${item.fee.toLocaleString("en-LK")}`;
+  const labels = item.medium === "Sinhala"
+    ? [["Medium", getLocalizedMedium(item)], ["Location", getLocalizedClassLocation(item)], ["Commencement", "නොවැම්බර් දෙවන සතියේ සිට"], ["Time", getLocalizedClassSchedule(item)]]
+    : [["Medium", getLocalizedMedium(item)], ["Location", getLocalizedClassLocation(item)], ["Commencement", item.commencement ?? ""], ["Time", getLocalizedClassSchedule(item)]];
+
   return (
     <div className="container page">
       <Breadcrumbs
         items={[
-          { label: "Tuition Classes", href: "/classes" },
-          { label: item.title },
+          { label: "Classes", href: "/classes" },
+          { label: title },
         ]}
       />
       <section className="listing-detail">
-        <div className="detail-poster">
-          <Image
-            src={item.poster}
-            alt={`${item.title} demonstration poster`}
-            width={600}
-            height={750}
-            priority
-          />
-        </div>
+        <Image className="detail-poster" src={item.poster} alt={`${title} poster`} width={640} height={640} priority />
         <div>
-          <span className="badge warm">Demo listing · {item.type}</span>
-          <SectionHeader
-            page
-            title={item.title}
-            description={item.description}
-          />
-          <p>
-            With{" "}
-            <Link className="text-link" href={`/teachers/${teacher.slug}`}>
-              {teacher.name}
-            </Link>
-          </p>
+          <SectionHeader page title={title} description={description} />
+          {item.target && <p className="badge warm">{item.medium === "Sinhala" ? "2028 A/L සිංහල මාධ්‍ය සිසුන් සඳහා" : item.target}</p>}
+          <div className="class-detail-fee" aria-label={`${feeLabel}: ${feeAmount}`}>
+            <span>{feeLabel}</span>
+            <strong>{feeAmount}</strong>
+            <span>{item.medium === "Sinhala" ? "මාසිකව" : "per month"}</span>
+          </div>
           <dl className="specs">
-            {[
-              ["Subject", item.subject],
-              ["Grade", item.level],
-              ["Medium", item.medium],
-              ["District", item.district],
-              ["Class type", item.type],
-              ["Format", item.format],
-              ["Location", item.location],
-              ["Schedule", item.schedule + " (Sri Lanka time)"],
-            ].map(([label, value]) => (
-              <div key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
+            {labels.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
           </dl>
-          <WhatsAppButton message={classMessage(item, teacher)}>
-            Inquire via WhatsApp
-          </WhatsAppButton>
-          <p className="small muted">
-            The website owner handles inquiries. Confirm all class details
-            before registering.
-          </p>
+          <section className="class-features" aria-labelledby="class-features-title">
+            <h2 id="class-features-title">
+              {item.medium === "Sinhala" ? "අපේ පන්තියේ විශේෂතා" : "Why choose this class?"}
+            </h2>
+            <ol>
+              {features.map((feature, index) => (
+                <li key={`${feature.title}-${index}`}>
+                  <span className="class-feature-number" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3>{feature.title}</h3>
+                    {feature.description && <p>{feature.description}</p>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+          {item.type === "Physical" && <p className="info-note">{item.medium === "Sinhala" ? "තනි අවධානය සඳහා උපරිම සිසුන් සංඛ්‍යාව 40 ක්." : "Maximum batch size: 40 students for individual attention."}</p>}
+          {item.type === "Online" && <p className="info-note">{item.medium === "Sinhala" ? "Google Meet හරහා සජීවී පන්තිය. මඟ පෙන්වන පත්‍රිකා සහ ප්‍රශ්න පත්‍ර මාසිකව සිසුන්ගේ නිවසට Delivery කෙරේ." : "Live classes via Google Meet. Model papers and tutes are delivered monthly to the student's home."}</p>}
+          <EnrollmentDialog
+            initialClassId={item.id}
+            label="Enroll class"
+            className="button whatsapp"
+          />
         </div>
-      </section>
-      <section className="section">
-        <SectionHeader title="About the teacher" />
-        <TeacherCard teacher={teacher} />
-        <p className="prose">{teacher.bio}</p>
-      </section>
-      <section className="section">
-        <SectionHeader title="Related tuition classes" href="/classes" />
-        <ClassGrid items={related} />
       </section>
     </div>
   );

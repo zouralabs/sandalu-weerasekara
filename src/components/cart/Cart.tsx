@@ -3,16 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { Trash2, ArrowLeft } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { cartLines } from "@/lib/cart";
+import { cartLines, courierCharge } from "@/lib/cart";
 import { orderMessage } from "@/lib/whatsapp";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { QuantityControl } from "@/components/books/BookActions";
 import { WhatsAppButton } from "@/components/common/WhatsAppButton";
 import { EmptyState } from "@/components/common/EmptyState";
 export function Cart() {
-  const { items, ready, update, remove, storageError } = useCart();
+  const { items, ready, update, remove, clear, storageError } = useCart();
   const lines = cartLines(items);
-  const total = lines.reduce((sum, line) => sum + line.subtotal, 0);
+  const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
+  const subtotal = lines.reduce((sum, line) => sum + line.subtotal, 0);
+  const delivery = courierCharge(items);
+  const total = subtotal + delivery;
   if (!ready) return <p role="status">Loading your saved cart…</p>;
   if (!lines.length)
     return (
@@ -50,7 +53,7 @@ export function Cart() {
                     <Link href={`/shop/${book.slug}`}>{book.title}</Link>
                   </h2>
                   <p className="small muted">
-                    {book.medium} medium · Sample product
+                    {book.medium ? `${book.medium} medium · ` : ""}Sample product
                   </p>
                   <p>{formatCurrency(book.price)} each</p>
                   <button
@@ -84,25 +87,25 @@ export function Cart() {
           <dl>
             <div>
               <dt>
-                Items ({lines.reduce((sum, line) => sum + line.quantity, 0)})
+                Items ({itemCount})
               </dt>
-              <dd>{formatCurrency(total)}</dd>
+              <dd>{formatCurrency(subtotal)}</dd>
             </div>
             <div>
-              <dt>Delivery</dt>
-              <dd>Confirmed in chat</dd>
+              <dt>Courier (minimum)</dt>
+              <dd>{formatCurrency(delivery)}</dd>
             </div>
             <div className="summary-total">
               <dt>Total</dt>
               <dd>{formatCurrency(total)}</dd>
             </div>
           </dl>
-          <WhatsAppButton message={orderMessage(items)} />
+          <WhatsAppButton message={orderMessage(items)} onClick={clear} />
           <p className="small muted">
             Review your message, open WhatsApp and send it manually. The store
             will confirm availability, delivery and payment.
           </p>
-          <p className="small">Your cart stays saved when you open WhatsApp.</p>
+          <p className="small">Clicking the order button clears this cart.</p>
         </aside>
       </div>
     </>

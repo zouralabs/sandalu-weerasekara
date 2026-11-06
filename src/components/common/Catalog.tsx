@@ -3,8 +3,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { books } from "@/data/books";
-import { teachers } from "@/data/teachers";
-import { classes } from "@/data/classes";
+import { accessories } from "@/data/accessories";
 import {
   districts,
   subjects,
@@ -14,49 +13,28 @@ import {
 } from "@/data/categories";
 import { filterBooks } from "@/lib/filters";
 import { BookGrid } from "@/components/books/BookCard";
-import { ClassGrid } from "@/components/classes/ClassCard";
-import { TeacherGrid } from "@/components/teachers/TeacherCard";
 import { EmptyState } from "./EmptyState";
-type Kind = "books" | "classes" | "teachers";
+type Kind = "books" | "accessories";
 export function Catalog({ kind }: { kind: Kind }) {
   const search = useSearchParams();
   const router = useRouter();
   const path = usePathname();
   const [expanded, setExpanded] = useState(false);
-  const fields: { key: string; label: string; options: string[] }[] = [
-    { key: "level", label: "Educational level", options: levels },
-    { key: "subject", label: "Subject", options: subjects },
-    { key: "medium", label: "Medium", options: mediums },
-    ...(kind === "books"
+  const fields: { key: string; label: string; options: string[] }[] =
+    kind === "books"
       ? [
+          { key: "level", label: "Educational level", options: levels },
+          { key: "subject", label: "Subject", options: subjects },
+          { key: "medium", label: "Medium", options: mediums },
           { key: "category", label: "Book type", options: bookTypes },
           { key: "stock", label: "Availability", options: ["in", "out"] },
         ]
-      : [{ key: "district", label: "District", options: districts }]),
-    ...(kind === "classes"
-      ? [
-          {
-            key: "type",
-            label: "Class type",
-            options: ["Online", "Physical", "Hybrid"],
-          },
-          {
-            key: "format",
-            label: "Class format",
-            options: [
-              "Individual",
-              "Group",
-              "Revision",
-              "Theory",
-              "Paper Class",
-            ],
-          },
-        ]
-      : []),
-  ];
+      : [{ key: "stock", label: "Availability", options: ["in", "out"] }];
   const activeKeys = [
     ...fields.map((field) => field.key),
-    ...(kind === "books" ? ["min", "max", "q"] : []),
+    "min",
+    "max",
+    "q",
   ];
   const active = Array.from(search.entries()).filter(
     ([key, value]) => activeKeys.includes(key) && value,
@@ -66,34 +44,14 @@ export function Catalog({ kind }: { kind: Kind }) {
     if (value) next.set(key, value);
     else next.delete(key);
     if (key !== "limit") next.delete("limit");
+    if (key !== "page") next.delete("page");
     router.replace(`${path}?${next.toString()}`, { scroll: false });
   }
-  const bookResults = filterBooks(
-    books,
+  const results = filterBooks(
+    kind === "books" ? books : accessories,
     new URLSearchParams(search.toString()),
   );
-  const classResults = classes.filter((item) =>
-    fields.every(
-      ({ key }) =>
-        !search.get(key) || item[key as keyof typeof item] === search.get(key),
-    ),
-  );
-  const teacherResults = teachers.filter((item) =>
-    fields.every(({ key }) => {
-      const value = search.get(key);
-      if (!value) return true;
-      if (key === "level") return item.levels.some((x) => x === value);
-      if (key === "subject") return item.subjects.includes(value);
-      if (key === "medium") return item.mediums.some((x) => x === value);
-      return item.district === value;
-    }),
-  );
-  const count =
-    kind === "books"
-      ? bookResults.length
-      : kind === "classes"
-        ? classResults.length
-        : teacherResults.length;
+  const count = results.length;
   const rawLimit = Number(search.get("limit") ?? 12);
   const limit =
     Number.isFinite(rawLimit) && rawLimit >= 12 ? Math.floor(rawLimit) : 12;
@@ -152,38 +110,40 @@ export function Catalog({ kind }: { kind: Kind }) {
               </select>
             </div>
           ))}
-          {kind === "books" && (
-            <fieldset className="price-filter">
-              <legend>Price range (LKR)</legend>
-              <div>
-                {["min", "max"].map((key) => (
-                  <label key={key}>
-                    <span className="small">
-                      {key === "min" ? "Minimum" : "Maximum"}
-                    </span>
-                    <input
-                      type="number"
-                      min="0"
-                      step="50"
-                      placeholder={key === "min" ? "0" : "Any"}
-                      value={search.get(key) ?? ""}
-                      onChange={(event) => change(key, event.target.value)}
-                    />
-                  </label>
-                ))}
-              </div>
-              {search.get("min") &&
-                search.get("max") &&
-                Number(search.get("min")) > Number(search.get("max")) && (
-                  <p role="alert" className="small">
-                    Minimum must not exceed maximum.
-                  </p>
-                )}
-            </fieldset>
-          )}
+          <fieldset className="price-filter">
+            <legend>Price range (LKR)</legend>
+            <div>
+              {["min", "max"].map((key) => (
+                <label key={key}>
+                  <span className="small">
+                    {key === "min" ? "Minimum" : "Maximum"}
+                  </span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="50"
+                    placeholder={key === "min" ? "0" : "Any"}
+                    value={search.get(key) ?? ""}
+                    onChange={(event) => change(key, event.target.value)}
+                  />
+                </label>
+              ))}
+            </div>
+            {search.get("min") &&
+              search.get("max") &&
+              Number(search.get("min")) > Number(search.get("max")) && (
+                <p role="alert" className="small">
+                  Minimum must not exceed maximum.
+                </p>
+              )}
+          </fieldset>
           <div className="filter-help">
             <strong>Need a hand?</strong>
-            <p>We can help you find the right book or class.</p>
+            <p>
+              {kind === "books"
+                ? "We can help you find the right book."
+                : "We can help you find the right accessory."}
+            </p>
             <a href="/contact" className="text-link">
               Contact us →
             </a>
@@ -195,21 +155,19 @@ export function Catalog({ kind }: { kind: Kind }) {
           <p role="status">
             <strong>{count}</strong> {kind} found
           </p>
-          {kind === "books" && (
-            <label className="sort-label">
-              Sort by
-              <select
-                value={search.get("sort") ?? ""}
-                onChange={(event) => change("sort", event.target.value)}
-              >
-                <option value="">Default</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="name">Name: A–Z</option>
-                <option value="newest">Recently Added</option>
-              </select>
-            </label>
-          )}
+          <label className="sort-label">
+            Sort by
+            <select
+              value={search.get("sort") ?? ""}
+              onChange={(event) => change("sort", event.target.value)}
+            >
+              <option value="">Default</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="name">Name: A–Z</option>
+              <option value="newest">Recently Added</option>
+            </select>
+          </label>
         </div>
         {active.length > 0 && (
           <div className="active-filters">
@@ -237,12 +195,8 @@ export function Catalog({ kind }: { kind: Kind }) {
         )}
         {count === 0 ? (
           <EmptyState />
-        ) : kind === "books" ? (
-          <BookGrid items={bookResults.slice(0, limit)} />
-        ) : kind === "classes" ? (
-          <ClassGrid items={classResults.slice(0, limit)} />
         ) : (
-          <TeacherGrid items={teacherResults.slice(0, limit)} />
+          <BookGrid items={results.slice(0, limit)} />
         )}
         <div className="load-more">
           {count > 0 && (

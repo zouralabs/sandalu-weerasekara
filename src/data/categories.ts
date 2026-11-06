@@ -1,16 +1,5 @@
 export const subjects = [
-  "Combined Mathematics",
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "ICT",
   "Accounting",
-  "Business Studies",
-  "Economics",
-  "Science",
-  "Mathematics",
-  "English",
-  "Sinhala",
 ];
 export const districts = [
   "Ampara",
@@ -39,26 +28,13 @@ export const districts = [
   "Trincomalee",
   "Vavuniya",
 ];
-export const levels = ["Primary", "Grade 6–9", "O/L", "A/L"];
-export const mediums = ["Sinhala", "English", "Tamil"];
+export const levels = [ "O/L", "A/L"];
+export const mediums = ["Sinhala", "English"];
 export const bookTypes = [
-  "Textbooks",
-  "Revision Guides",
-  "Past Papers",
   "Model Papers",
   "Workbooks",
-  "Educational Stationery",
 ];
 export const categories = [
-  { name: "GCE Advanced Level", href: "/shop?level=A%2FL" },
-  { name: "GCE Ordinary Level", href: "/shop?level=O%2FL" },
-  { name: "Grade 6\u20139", href: "/shop?level=Grade%206%E2%80%939" },
-  { name: "Grade 1\u20135", href: "/shop?level=Primary" },
-  { name: "Past Papers", href: "/shop?category=Past%20Papers" },
   { name: "Model Papers", href: "/shop?category=Model%20Papers" },
-  { name: "Revision Guides", href: "/shop?category=Revision%20Guides" },
-  {
-    name: "Educational Stationery",
-    href: "/shop?category=Educational%20Stationery",
-  },
+  { name: "Workbooks", href: "/shop?category=Workbooks" },
 ];

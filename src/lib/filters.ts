@@ -18,7 +18,11 @@ export function filterBooks(books: Book[], params: URLSearchParams) {
         params.get("q") ?? "",
         book.title,
         book.subject,
-        book.medium,
+        book.medium ?? "",
+        book.level,
+        book.category,
+        book.author ?? "",
+        book.publisher ?? "",
       ) &&
       (!params.get("stock") ||
         book.inStock === (params.get("stock") === "in")) &&

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { seminars } from "@/data/seminars";
-import { teachers } from "@/data/teachers";
 import { EventStatus, SeminarGrid } from "@/components/seminars/SeminarCard";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { SectionHeader } from "@/components/common/SectionHeader";
@@ -30,7 +29,6 @@ export default async function Page({
   const { slug } = await params;
   const item = seminars.find((item) => item.slug === slug);
   if (!item) notFound();
-  const teacher = teachers.find((teacher) => teacher.id === item.teacherId)!;
   return (
     <div className="container page">
       <Breadcrumbs
@@ -55,12 +53,7 @@ export default async function Page({
             title={item.title}
             description={item.description}
           />
-          <p>
-            With{" "}
-            <Link className="text-link" href={`/teachers/${teacher.slug}`}>
-              {teacher.name}
-            </Link>
-          </p>
+          <p>With Sandalu Isiwara</p>
           <dl className="specs">
             {[
               ["Subject", item.subject],
@@ -87,7 +80,7 @@ export default async function Page({
             ))}
           </dl>
           <WhatsAppButton
-            message={`Hello, I would like information about ${item.title}.\nTeacher: ${teacher.name}\nDate: ${item.date}\nTime: ${item.time}\nVenue: ${item.venue}\nPlease confirm whether this seminar is available and share registration details.`}
+            message={`Hello, I would like information about ${item.title}.\nOrganiser: Sandalu Isiwara\nDate: ${item.date}\nTime: ${item.time}\nVenue: ${item.venue}\nPlease confirm whether this seminar is available and share registration details.`}
           >
             Inquire about this seminar
           </WhatsAppButton>
