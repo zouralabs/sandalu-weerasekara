@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, GraduationCap, NotebookPen, PenLine, ShieldCheck, ShoppingCart, Truck } from "lucide-react";
 import { books } from "@/data/books";
-import { accessories } from "@/data/accessories";
 import { classes } from "@/data/classes";
 import { BookCard } from "@/components/books/BookCard";
 import { ClassCard } from "@/components/classes/ClassCard";
@@ -19,7 +18,7 @@ export default function Home() {
       <div className="container commerce-hero-inner">
         <div className="commerce-hero-copy">
           <span className="commerce-pill"><GraduationCap size={19} /> The Best Accounting Supporter in the Town</span>
-          <header className="header"><h1 id="home-title">Every <span>Account</span><br />has a Story.</h1><p>Educational books <span aria-hidden="true">·</span> Study accessories</p></header>
+          <header className="header"><h1 id="home-title">Every <span>Account</span><br />has a Story.</h1><p>Educational books</p></header>
           <div className="commerce-hero-actions"><Link href="/classes" className="button primary">Explore Classes <ArrowRight size={19} /></Link><Link href="/books" className="button secondary">Explore Books <ArrowRight size={18} /></Link></div>
           <div className="commerce-hero-promise"><span><ShieldCheck size={17} /> Carefully curated resources</span><span><ShoppingCart size={17} /> Easy cart enquiries</span></div>
         </div>
@@ -47,9 +46,7 @@ export default function Home() {
             label="Featured books"
             variant="books"
           >
-            {books
-              .filter((book) => book.featured)
-              .map((book) => <BookCard key={book.id} book={book} />)}
+            {books.map((book) => <BookCard key={book.id} book={book} />)}
           </ContentSlider>
         </div>
       </section>
@@ -66,32 +63,17 @@ export default function Home() {
           <ContentSlider
             id="featured-classes-track"
             itemLabel="class"
-            label="Featured classes"
+            label="Classes"
             variant="classes"
           >
-            {classes
-              .filter((item) => item.featured)
-              .map((item) => <ClassCard key={item.id} item={item} />)}
+            {classes.map((item) => <ClassCard key={item.id} item={item} />)}
           </ContentSlider>
-        </div>
-      </section>
-      <section className="container commerce-accessories" aria-labelledby="accessories-title">
-        <header className="header commerce-accessories-heading">
-          <div>
-            <span className="eyebrow">READY YOUR DESK</span>
-            <h2 id="accessories-title">Study essentials</h2>
-            <p>Useful tools for the everyday work of learning.</p>
-          </div>
-          <Link href="/accessories" className="button secondary">Browse accessories <ArrowRight size={17}/></Link>
-        </header>
-        <div className="commerce-accessories-grid">
-          {accessories.map((item) => <BookCard key={item.id} book={item} />)}
         </div>
       </section>
       <section className="container commerce-book-info" aria-label="Book author and publisher">
         <div className="author-card">
           <Image
-            src="/images/hero-educator.png"
+            src="/images/author.png"
             alt="Sandalu Isiwara Weerasekara"
             width={300}
             height={290}
@@ -116,7 +98,7 @@ export default function Home() {
           </div>
           <div className="publisher-copy">
             <span className="eyebrow">PUBLISHER</span>
-            <strong>සිහින ප්‍රකාශනයකි</strong>
+            <strong>සිහින ප්‍රකාශන</strong>
             <span>Sihina Prakashana</span>
           </div>
         </div>

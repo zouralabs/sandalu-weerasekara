@@ -34,7 +34,7 @@ export function Footer() {
         <div>
           <h2>We’re here to help</h2>
           <p>
-            Book and accessory enquiries — start a conversation.
+            Enquiries about books, classes, and accessories — start a conversation.
           </p>
           {site.telephone && (
             <a href={`tel:${site.telephone}`}>{site.telephone}</a>
@@ -48,7 +48,16 @@ export function Footer() {
         <span>
           © {new Date().getFullYear()} {site.name}. All rights reserved.
         </span>
-        <span>Orders confirmed personally through WhatsApp.</span>
+        <nav className="footer-legal" aria-label="Legal">
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Use</Link>
+        </nav>
+        <span className="footer-credit">
+          Website by{" "}
+          <a href="https://zouralabs.com" target="_blank" rel="noopener noreferrer">
+            Zoura Labs
+          </a>
+        </span>
       </div>
     </footer>
   );

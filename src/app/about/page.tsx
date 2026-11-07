@@ -39,7 +39,7 @@ export default function AboutPage() {
           </div>
           <div className="about-hero-visual" aria-hidden="true">
             <Image
-              src="/images/hero-educator.png"
+              src="/images/about.png"
               alt=""
               width={760}
               height={736}

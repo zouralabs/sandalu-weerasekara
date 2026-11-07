@@ -7,7 +7,7 @@ import { SocialLinks } from "@/components/common/SocialLinks";
 export const metadata = {
   title: "Contact Us",
   description:
-    "Contact the store about book orders and study accessories.",
+    "Contact us about books, classes, and study accessories.",
 };
 export default function Page() {
   return (
@@ -21,7 +21,7 @@ export default function Page() {
             <span className="eyebrow">CONTACT</span>
             <h1 id="contact-title">Let’s talk about your next step.</h1>
             <p>
-              Need help choosing a book, accessory, or class? Reach out directly.
+              Need help with books, classes, or accessories? Reach out directly.
             </p>
           </header>
           <div className="commerce-contact-points">

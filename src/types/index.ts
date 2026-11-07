@@ -10,7 +10,7 @@ export interface Book {
   level: Level;
   medium?: Medium;
   category: string;
-  image: string;
+  image: string; 
   inStock: boolean;
   featured: boolean;
   addedAt: string;

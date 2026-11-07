@@ -1,7 +1,7 @@
 "use client";
 
 import { Children, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
 interface ContentSliderProps {
   children: React.ReactNode;
@@ -21,6 +21,9 @@ export function ContentSlider({
   const trackRef = useRef<HTMLDivElement>(null);
   const [pageCount, setPageCount] = useState(1);
   const [activePage, setActivePage] = useState(0);
+  const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const isAutoPlayActive = autoPlayEnabled;
   const slides = Children.toArray(children);
 
   function syncPage() {
@@ -62,9 +65,52 @@ export function ContentSlider({
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (!autoPlayEnabled || pageCount < 2) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      const track = trackRef.current;
+      if (!track || document.hidden) return;
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      const currentPage = maxScroll > 1
+        ? Math.round((track.scrollLeft / maxScroll) * (pageCount - 1))
+        : 0;
+      const nextPage = (currentPage + 1) % pageCount;
+      track.scrollTo({
+        left: (maxScroll * nextPage) / (pageCount - 1),
+        behavior: prefersReducedMotion ? "instant" : "smooth",
+      });
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [autoPlayEnabled, pageCount, prefersReducedMotion]);
+
   return (
-    <div className="commerce-content-slider" data-variant={variant}>
+    <div
+      className="commerce-content-slider"
+      data-variant={variant}
+    >
       <div className="commerce-content-slider-controls">
+        <button
+          className="commerce-content-slider-button"
+          type="button"
+          aria-label={`${isAutoPlayActive ? "Pause" : "Play"} automatic ${label.toLowerCase()}`}
+          aria-pressed={!isAutoPlayActive}
+          onClick={() => {
+            setAutoPlayEnabled((enabled) => !enabled);
+          }}
+        >
+          {isAutoPlayActive ? <Pause size={17} /> : <Play size={17} />}
+        </button>
         <button
           className="commerce-content-slider-button"
           type="button"

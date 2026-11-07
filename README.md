@@ -104,9 +104,9 @@ Colors and type are controlled by CSS custom properties in `globals.css`. Tailwi
 
 ## Privacy and limits
 
-Cart items are stored only in the browser under `edulanka-cart-v1`. Contact-form information is held in the current component and becomes a user-reviewed WhatsApp message. The app does not send inquiries to a server. WhatsApp opens only after the customer chooses to open it with the prepared text.
+Cart item IDs and quantities are stored in browser `localStorage` under `sandalu-weerasekara-cart-v1`. Contact and class-enrollment forms submit the information entered by the visitor to Web3Forms for delivery to the site owner. The site application does not maintain an inquiry database. The cart's order button opens WhatsApp with a prepared message; the visitor reviews and sends it themselves.
 
-No authentication, dashboards, payment processing, backend, cloud storage, analytics, fabricated testimonials or hosting configuration is included.
+The site has no user accounts or online payment processing. It does not currently implement analytics or advertising tracking. Web3Forms and WhatsApp are third-party services and handle information under their own policies.
 
 ## Checks
 

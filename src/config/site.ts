@@ -5,7 +5,7 @@ export const site = {
     "Educational books and study accessories by Sandalu Isiwara, serving students across Sri Lanka.",
   whatsappNumber: "94765623763",
   telephone: "+94 76 562 3763",
-  email: "sandaluisiwara@gmail.com",
+  email: "sandaluweerasekara@gmail.com",
   address: "",
   currency: "LKR",
   socialLinks: [
@@ -17,7 +17,7 @@ export const site = {
     },
     {
       label: "Facebook",
-      url: "https://www.facebook.com/share/19sh5GdrPv/?mibextid=wwXIfr",
+      url: "https://www.facebook.com/sandaluisiwara.weerasekara.94",
     },
   ],
   navigation: [
