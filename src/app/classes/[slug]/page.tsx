@@ -82,7 +82,7 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
             </ol>
           </section>
           {item.type === "Physical" && <p className="info-note">{item.medium === "Sinhala" ? "තනි අවධානය සඳහා උපරිම සිසුන් සංඛ්‍යාව 40 ක්." : "Maximum batch size: 40 students for individual attention."}</p>}
-          {item.type === "Online" && <p className="info-note">{item.medium === "Sinhala" ? "Google Meet හරහා සජීවී පන්තිය. මඟ පෙන්වන පත්‍රිකා සහ ප්‍රශ්න පත්‍ර මාසිකව සිසුන්ගේ නිවසට Delivery කෙරේ." : "Live classes via Google Meet. Model papers and tutes are delivered monthly to the student's home."}</p>}
+          {item.type === "Online" && <p className="info-note">{item.medium === "Sinhala" ? "Google Meet හරහා සජීවීව. Tutes සහ Model Papers මාසිකව සිසුන්ගේ නිවසට Deliver කෙරේ." : "Live classes via Google Meet. Model papers and tutes are delivered monthly to the student's home."}</p>}
           <EnrollmentDialog
             initialClassId={item.id}
             label="Enroll class"

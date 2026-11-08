@@ -18,7 +18,7 @@ export default function Home() {
       <div className="container commerce-hero-inner">
         <div className="commerce-hero-copy">
           <span className="commerce-pill"><GraduationCap size={19} /> The Best Accounting Supporter in the Town</span>
-          <header className="header"><h1 id="home-title">Every <span>Account</span><br />has a Story.</h1><p>Educational books</p></header>
+          <header className="header"><h1 id="home-title">Every <span>Account</span><br />has a Story.</h1><p>Classes, Educational books and Study Accessories</p></header>
           <div className="commerce-hero-actions"><Link href="/classes" className="button primary">Explore Classes <ArrowRight size={19} /></Link><Link href="/books" className="button secondary">Explore Books <ArrowRight size={18} /></Link></div>
           <div className="commerce-hero-promise"><span><ShieldCheck size={17} /> Carefully curated resources</span><span><ShoppingCart size={17} /> Easy cart enquiries</span></div>
         </div>
@@ -32,24 +32,6 @@ export default function Home() {
         <div><Truck size={22}/><span><strong>Islandwide delivery</strong><small>Get study materials delivered</small></span></div>
       </section>
       <section className="container commerce-offers" aria-labelledby="offers-title"><header className="header commerce-section-heading"><span className="eyebrow">EXPLORE</span><h2 id="offers-title">What we offer</h2><p>Find the right resources for every part of your study routine.</p></header><div className="commerce-offer-grid">{pathways.map(({href,title,detail,icon:Icon,decoration})=><Link className="commerce-offer-card" key={href} href={href}><span className={`commerce-offer-illustration ${decoration}`} aria-hidden="true"><Icon size={54} strokeWidth={1.45}/></span><span className="commerce-offer-text"><strong>{title}</strong><span>{detail}</span></span><span className="commerce-circle"><ArrowRight size={21}/></span></Link>)}</div></section>
-      <section className="container commerce-featured" aria-labelledby="featured-title">
-        <header className="header commerce-featured-intro">
-          <span className="eyebrow">THE BOOKSHELF</span>
-          <h2 id="featured-title">Books for your next big step.</h2>
-          <p>Model papers and workbooks to make every study session count.</p>
-          <Link href="/books" className="button secondary">View all books <ArrowRight size={17}/></Link>
-        </header>
-        <div className="commerce-featured-products">
-          <ContentSlider
-            id="featured-books-track"
-            itemLabel="book"
-            label="Featured books"
-            variant="books"
-          >
-            {books.map((book) => <BookCard key={book.id} book={book} />)}
-          </ContentSlider>
-        </div>
-      </section>
       <section className="container commerce-classes" aria-labelledby="classes-title">
         <header className="header commerce-classes-heading">
           <div>
@@ -70,6 +52,25 @@ export default function Home() {
           </ContentSlider>
         </div>
       </section>
+      <section className="container commerce-featured" aria-labelledby="featured-title">
+        <header className="header commerce-featured-intro">
+          <span className="eyebrow">THE BOOKSHELF</span>
+          <h2 id="featured-title">Books for your next big step.</h2>
+          <p>Model papers and workbooks to make every study session count.</p>
+          <Link href="/books" className="button secondary">View all books <ArrowRight size={17}/></Link>
+        </header>
+        <div className="commerce-featured-products">
+          <ContentSlider
+            id="featured-books-track"
+            itemLabel="book"
+            label="Featured books"
+            variant="books"
+          >
+            {books.map((book) => <BookCard key={book.id} book={book} />)}
+          </ContentSlider>
+        </div>
+      </section>
+      
       <section className="container commerce-book-info" aria-label="Book author and publisher">
         <div className="author-card">
           <Image

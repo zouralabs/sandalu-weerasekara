@@ -80,7 +80,7 @@ export function SearchResults() {
       <SectionHeader
         page
         title={query ? `Results for “${query}”` : "What are you looking for?"}
-        description="Search book titles, subjects, authors, publishers, and accessories."
+        description="Search classes, book titles, subjects, authors, publishers, and accessories."
       />
       <form className="page-search" action="/search/" role="search">
         <label className="sr-only" htmlFor="results-query">

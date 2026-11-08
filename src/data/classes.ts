@@ -16,7 +16,7 @@ export const classes: TuitionClass[] = [
   {
     id: "accounting-physical-si",
     slug: "al-accounting-physical-sinhala",
-    title: "G.C.E. A/L (2027) - ගිණුම්කරණය (Physical Group Class)",
+    title: "A/L (2027) - ගිණුම්කරණය (Physical Sinhala Medium Group Class)",
     subject: "Accounting",
     level: "A/L",
     medium: "Sinhala",
@@ -40,7 +40,7 @@ export const classes: TuitionClass[] = [
   {
     id: "accounting-physical-en",
     slug: "al-accounting-physical-english",
-    title: "G.C.E. A/L (2027) - Accounting (Physical Group Class)",
+    title: "A/L (2027) - Accounting (Physical English Medium Group Class)",
     subject: "Accounting",
     level: "A/L",
     medium: "English",
@@ -60,7 +60,7 @@ export const classes: TuitionClass[] = [
   {
     id: "accounting-online-si",
     slug: "al-accounting-online-sinhala",
-    title: "G.C.E. A/L (2027) - ගිණුම්කරණය (Online Class)",
+    title: "A/L (2027) - ගිණුම්කරණය (Online Sinhala Medium Class)",
     subject: "Accounting",
     level: "A/L",
     medium: "Sinhala",
@@ -84,7 +84,7 @@ export const classes: TuitionClass[] = [
   {
     id: "accounting-online-en",
     slug: "al-accounting-online-english",
-    title: "G.C.E. A/L (2027) - Accounting (Online Class)",
+    title: "A/L (2027) - Accounting (Online English Medium Class)",
     subject: "Accounting",
     level: "A/L",
     medium: "English",
@@ -104,7 +104,7 @@ export const classes: TuitionClass[] = [
   {
     id: "accounting-2028-online-si",
     slug: "al-accounting-2028-online-sinhala",
-    title: "G.C.E. A/L (2028) - ගිණුම්කරණය (Online Class)",
+    title: "A/L (2028) - ගිණුම්කරණය (Online Sinhala Medium Class)",
     subject: "Accounting",
     level: "A/L",
     medium: "Sinhala",
@@ -129,7 +129,7 @@ export const classes: TuitionClass[] = [
   {
     id: "accounting-2028-online-en",
     slug: "al-accounting-2028-online-english",
-    title: "G.C.E. A/L (2028) - Accounting (Online Class)",
+    title: "A/L (2028) - Accounting (Online English Medium Class)",
     subject: "Accounting",
     level: "A/L",
     medium: "English",

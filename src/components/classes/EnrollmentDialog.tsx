@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { classes } from "@/data/classes";
 
@@ -19,9 +20,14 @@ export function EnrollmentDialog({
 }: EnrollmentDialogProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const formId = useId();
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [selectedClassId, setSelectedClassId] = useState(initialClassId ?? "");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setPortalRoot(document.body);
+  }, []);
 
   function openDialog() {
     setSelectedClassId(initialClassId ?? "");
@@ -72,14 +78,15 @@ export function EnrollmentDialog({
       <button type="button" className={className} onClick={openDialog}>
         {label}
       </button>
-      <dialog
-        ref={dialog}
-        className="enrollment-dialog"
-        aria-labelledby={`${formId}-title`}
-        onClick={(event) => {
-          if (event.target === dialog.current) dialog.current?.close();
-        }}
-      >
+      {portalRoot && createPortal(
+        <dialog
+          ref={dialog}
+          className="enrollment-dialog"
+          aria-labelledby={`${formId}-title`}
+          onClick={(event) => {
+            if (event.target === dialog.current) dialog.current?.close();
+          }}
+        >
         <div className="enrollment-dialog-top">
           <div>
             <h2 id={`${formId}-title`}>Enroll in a class</h2>
@@ -193,7 +200,9 @@ export function EnrollmentDialog({
           </button>
           {message && <p className="enrollment-status" role="status">{message}</p>}
         </form>
-      </dialog>
+        </dialog>,
+        portalRoot,
+      )}
     </>
   );
 }

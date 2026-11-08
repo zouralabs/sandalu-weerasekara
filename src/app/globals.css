@@ -1811,6 +1811,7 @@ fieldset {
   position: fixed;
   inset: 0;
   width: min(560px, calc(100% - 32px));
+  max-height: 90vh;
   max-height: min(90dvh, 760px);
   margin: auto;
   padding: 24px;
