@@ -14,7 +14,7 @@ export function BookCard({ book }: { book: Book }) {
       >
         <Image
           src={book.image}
-          alt={`${book.title} — sample cover`}
+          alt={book.title}
           width={450}
           height={600}
           sizes="(max-width: 600px) 40vw, (max-width: 1000px) 25vw, 220px"

@@ -1,7 +1,8 @@
 import { products as books } from "@/data/products";
 import type { CartItem } from "@/types";
 export const MAX_QUANTITY = 99;
-export const COURIER_CHARGE_MINIMUM = 200;
+export const PREPAID_COURIER_CHARGE = 200;
+export const COD_COURIER_CHARGE = 300;
 export function normalizeCart(value: unknown): CartItem[] {
   if (!Array.isArray(value)) return [];
   const quantities = new Map<string, number>();
@@ -25,9 +26,6 @@ export function normalizeCart(value: unknown): CartItem[] {
   }
   return Array.from(quantities, ([bookId, quantity]) => ({ bookId, quantity }));
 }
-export function courierCharge(items: CartItem[]) {
-  return normalizeCart(items).length > 0 ? COURIER_CHARGE_MINIMUM : 0;
-}
 export function cartLines(items: CartItem[]) {
   return normalizeCart(items).flatMap((item) => {
     const book = books.find((book) => book.id === item.bookId);
@@ -41,4 +39,18 @@ export function cartLines(items: CartItem[]) {
         ]
       : [];
   });
+}
+export function cartPricing(items: CartItem[]) {
+  const lines = cartLines(items);
+  const subtotal = lines.reduce((sum, line) => sum + line.subtotal, 0);
+  const hasItems = lines.length > 0;
+  const prepaidCourier = hasItems ? PREPAID_COURIER_CHARGE : 0;
+  const codCourier = hasItems ? COD_COURIER_CHARGE : 0;
+  return {
+    subtotal,
+    prepaidCourier,
+    prepaidTotal: subtotal + prepaidCourier,
+    codCourier,
+    codTotal: subtotal + codCourier,
+  };
 }

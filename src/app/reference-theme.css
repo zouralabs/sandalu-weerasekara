@@ -102,7 +102,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #3e67ed; outline-
 .commerce-section-heading { margin-bottom: 1.6rem; }
 .commerce-section-heading h2 { margin: 0.2rem 0 0; }
 .commerce-section-heading p { margin-top: 0.6rem; }
-.commerce-offers { padding-block: 0.5rem clamp(2.1rem, 4.5vw, 4.6rem); }
+.commerce-offers { padding-block: 0.5rem; }
 .commerce-offer-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 2vw, 24px); }
 .commerce-offer-card { position: relative; display: flex; align-items: center; gap: 1.15rem; min-height: 170px; padding: clamp(18px, 2vw, 25px); border: 1px solid #d5e3ff; border-radius: 20px; background: linear-gradient(145deg, #fff 0%, #f0f6ff 100%); transition: transform 180ms ease, box-shadow 180ms ease; }
 .commerce-offer-card:hover { transform: translateY(-3px); box-shadow: var(--sw-shadow); }
@@ -127,7 +127,6 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #3e67ed; outline-
 .commerce-content-slider-track::-webkit-scrollbar { display: none; }
 .commerce-content-slider-track:focus-visible { outline: 2px solid #3158de; outline-offset: 4px; }
 .commerce-content-slider-slide { display: flex; flex: 0 0 calc((100% - 2 * clamp(10px, 1.6vw, 24px)) / 3); min-width: 0; scroll-snap-align: start; }
-.commerce-content-slider[data-variant="accessories"] .commerce-content-slider-slide { flex-basis: calc((100% - clamp(10px, 1.6vw, 24px)) / 2); }
 .commerce-content-slider-pagination { display: flex; justify-content: center; align-items: center; gap: 8px; min-height: 24px; margin-top: 12px; }
 .commerce-content-slider-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 99px; background: #aebdde; cursor: pointer; transition: width 160ms ease, background 160ms ease; }
 .commerce-content-slider-dot[aria-current="page"] { width: 24px; background: #244fe0; }
@@ -562,10 +561,29 @@ a.social-link:hover { transform: translateY(-2px); border-color: #9ab0dc; backgr
 .commerce-featured-intro .button.secondary:hover {
   background: #eef4ff;
 }
-.commerce-classes {
+.commerce-featured-accessories {
   display: block;
   margin-block: clamp(56px, 7vw, 88px);
   padding-block: clamp(24px, 4vw, 48px);
+  padding-inline: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.commerce-featured-accessories .commerce-featured-intro .eyebrow {
+  color: #267244;
+}
+.commerce-featured-accessories .commerce-featured-intro .button.secondary {
+  border-color: #c5ddcb;
+}
+.commerce-featured-accessories .commerce-featured-intro .button.secondary:hover {
+  background: #edf6ef;
+}
+.commerce-classes {
+  display: block;
+  margin-block: clamp(56px, 7vw, 88px);
+  padding-block: 0;
   padding-inline: 0;
   border: 0;
   background: transparent;

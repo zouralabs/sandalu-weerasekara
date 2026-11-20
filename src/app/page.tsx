@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, GraduationCap, NotebookPen, PenLine, ShieldCheck, ShoppingCart, Truck } from "lucide-react";
 import { books } from "@/data/books";
+import { accessories } from "@/data/accessories";
 import { classes } from "@/data/classes";
 import { BookCard } from "@/components/books/BookCard";
 import { ClassCard } from "@/components/classes/ClassCard";
@@ -67,6 +68,26 @@ export default function Home() {
             variant="books"
           >
             {books.map((book) => <BookCard key={book.id} book={book} />)}
+          </ContentSlider>
+        </div>
+      </section>
+      <section className="container commerce-featured commerce-featured-accessories" aria-labelledby="accessories-title">
+        <header className="header commerce-featured-intro commerce-classes-heading">
+          <div>
+            <span className="eyebrow">STUDY ESSENTIALS</span>
+            <h2 id="accessories-title">Calculators for every study session.</h2>
+            <p>Find a reliable calculator for class, homework and exams.</p>
+          </div>
+          <Link href="/accessories" className="button secondary">View all accessories <ArrowRight size={17}/></Link>
+        </header>
+        <div className="commerce-featured-products">
+          <ContentSlider
+            id="featured-accessories-track"
+            itemLabel="accessory"
+            label="Featured accessories"
+            variant="accessories"
+          >
+            {accessories.map((item) => <BookCard key={item.id} book={item} />)}
           </ContentSlider>
         </div>
       </section>

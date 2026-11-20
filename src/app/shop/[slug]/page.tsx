@@ -59,7 +59,7 @@ export default async function BookPage({
         <div className="product-cover">
           <Image
             src={book.image}
-            alt={`${book.title}, neutral sample cover`}
+            alt={book.title}
             width={450}
             height={600}
             priority

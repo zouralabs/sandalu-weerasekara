@@ -1,6 +1,6 @@
 import { site } from "@/config/site";
 import { formatCurrency } from "./formatCurrency";
-import { cartLines, courierCharge } from "./cart";
+import { cartLines, cartPricing } from "./cart";
 import type { CartItem } from "@/types";
 export function whatsappUrl(message: string, number = site.whatsappNumber) {
   return /^94\d{9}$/.test(number)
@@ -16,18 +16,21 @@ export function orderMessage(items: CartItem[]) {
         : `   Medium: ${book.medium}`;
     return `${i + 1}. ${book.title}\n${details}\n   Quantity: ${quantity}\n   Unit Price: ${formatCurrency(book.price)}\n   Subtotal: ${formatCurrency(subtotal)}`;
   });
-  const subtotal = lines.reduce((sum, line) => sum + line.subtotal, 0);
-  const delivery = courierCharge(items);
-  const total = subtotal + delivery;
+  const pricing = cartPricing(items);
   return `Hello, I would like to place an order.
 
 ORDER DETAILS
 
 ${itemLines.join("\n\n")}
 
-Items subtotal: ${formatCurrency(subtotal)}
-Courier (minimum): ${formatCurrency(delivery)}
-TOTAL: ${formatCurrency(total)}
+COURIER METHODS
+Courier (full payment): ${formatCurrency(pricing.prepaidCourier)}
+Courier (cash on delivery / COD): ${formatCurrency(pricing.codCourier)}
+
+TOTALS
+Total without courier: ${formatCurrency(pricing.subtotal)}
+Total with full payment: ${formatCurrency(pricing.prepaidTotal)}
+Total with cash on delivery / COD: ${formatCurrency(pricing.codTotal)}
 
 CUSTOMER DETAILS
 

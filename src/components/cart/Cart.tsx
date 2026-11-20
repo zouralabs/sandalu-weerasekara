@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Trash2, ArrowLeft } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { cartLines, courierCharge } from "@/lib/cart";
+import { cartLines, cartPricing } from "@/lib/cart";
 import { orderMessage } from "@/lib/whatsapp";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { QuantityControl } from "@/components/books/BookActions";
@@ -13,9 +13,7 @@ export function Cart() {
   const { items, ready, update, remove, clear, storageError } = useCart();
   const lines = cartLines(items);
   const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
-  const subtotal = lines.reduce((sum, line) => sum + line.subtotal, 0);
-  const delivery = courierCharge(items);
-  const total = subtotal + delivery;
+  const pricing = cartPricing(items);
   if (!ready) return <p role="status">Loading your saved cart…</p>;
   if (!lines.length)
     return (
@@ -86,18 +84,28 @@ export function Cart() {
           <h2>Order summary</h2>
           <dl>
             <div>
-              <dt>
-                Items ({itemCount})
-              </dt>
-              <dd>{formatCurrency(subtotal)}</dd>
+              <dt>Items ({itemCount})</dt>
+              <dd>{formatCurrency(pricing.subtotal)}</dd>
             </div>
             <div>
-              <dt>Courier (minimum)</dt>
-              <dd>{formatCurrency(delivery)}</dd>
+              <dt>Courier (full payment)</dt>
+              <dd>{formatCurrency(pricing.prepaidCourier)}</dd>
+            </div>
+            <div>
+              <dt>COD courier</dt>
+              <dd>{formatCurrency(pricing.codCourier)}</dd>
             </div>
             <div className="summary-total">
-              <dt>Total</dt>
-              <dd>{formatCurrency(total)}</dd>
+              <dt>Total without courier</dt>
+              <dd>{formatCurrency(pricing.subtotal)}</dd>
+            </div>
+            <div className="summary-total">
+              <dt>Full payment total</dt>
+              <dd>{formatCurrency(pricing.prepaidTotal)}</dd>
+            </div>
+            <div className="summary-total">
+              <dt>COD total</dt>
+              <dd>{formatCurrency(pricing.codTotal)}</dd>
             </div>
           </dl>
           <WhatsAppButton message={orderMessage(items)} onClick={clear} />

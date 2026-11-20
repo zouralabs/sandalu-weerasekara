@@ -1,9 +1,11 @@
+import { Suspense } from "react";
+import { Catalog } from "@/components/common/Catalog";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { SectionHeader } from "@/components/common/SectionHeader";
 
 export const metadata = {
 	title: "Accessories | Sandalu Isiwara",
-	description: "Study accessories are coming soon.",
+	description: "Browse calculators and study accessories from Sandalu Isiwara.",
 };
 
 export default function AccessoriesPage() {
@@ -13,9 +15,12 @@ export default function AccessoriesPage() {
 			<SectionHeader
 				page
 				eyebrow="THE STUDY ESSENTIALS"
-				title="Coming soon"
-				description="Study accessories are on their way. Please check back soon."
+				title="Study accessories"
+				description="Calculators and everyday essentials for your studies."
 			/>
+			<Suspense fallback={<p role="status">Loading accessories…</p>}>
+				<Catalog kind="accessories" />
+			</Suspense>
 		</main>
 	);
 }
